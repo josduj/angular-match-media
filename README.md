@@ -173,6 +173,20 @@ angular.module('myApp', ['matchMedia'])
 }]);
 ```
 
+You can also use `screenSizeConfigProvider` to set default rules:
+```javascript
+var app = angular.module('myApp', ['matchMedia']);
+app.config(['screenSizeConfigProvider', function (screenSizeConfigProvider) {
+    screenSizeConfigProvider.set({
+      rules: {
+        mobile  : "only screen and (max-width: 767px)",
+        tablet  : "only screen and (min-width: 768px) and (max-width: 1024px)",
+        desktop : "only screen and (min-width: 1025px)"
+      }
+    });
+}]);
+```
+
 ## License
 
 This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/deed.en_US.
