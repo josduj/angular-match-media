@@ -67,19 +67,35 @@
     }());
   });
 
+  app.provider('screenSizeConfig', function () {
+    var config = {
+      rules : {
+        lg: '(min-width: 1200px)',
+        md: '(min-width: 992px) and (max-width: 1199px)',
+        sm: '(min-width: 768px) and (max-width: 991px)',
+        xs: '(max-width: 767px)'
+      }
+    }
+
+    this.set = function (customConfig) {
+      customConfig = customConfig || {}
+      if (customConfig.rules) {
+        config.rules = customConfig.rules
+      }
+    }
+
+    this.$get = function () {
+      return config
+    }
+
+  });
+
   //Service to use in controllers
   app.service('screenSize', screenSize);
 
-  screenSize.$inject = ['$rootScope'];
+  screenSize.$inject = ['$rootScope', 'screenSizeConfig'];
 
-  function screenSize($rootScope) {
-
-    var defaultRules = {
-      lg: '(min-width: 1200px)',
-      md: '(min-width: 992px) and (max-width: 1199px)',
-      sm: '(min-width: 768px) and (max-width: 991px)',
-      xs: '(max-width: 767px)'
-    };
+  function screenSize($rootScope, screenSizeConfig) {
 
     this.isRetina = (
     	window.devicePixelRatio > 1 ||
@@ -113,7 +129,7 @@
     };
 
     var getCurrentMatch = function () {
-      var rules = that.rules || defaultRules;
+      var rules = that.rules || screenSizeConfig.rules;
 
       for (var property in rules) {
         if (rules.hasOwnProperty(property)) {
